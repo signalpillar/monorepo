@@ -1,13 +1,13 @@
 [app]
 
 # (str) Title of your application
-title = youtube-dl-gui
+title = My Application
 
 # (str) Package name
-package.name = youtube-dl-gui
+package.name = myapp
 
 # (str) Package domain (needed for android/ios packaging)
-package.domain = org.youtube-dl.gui
+package.domain = org.test
 
 # (str) Source code where the main.py live
 source.dir = .
