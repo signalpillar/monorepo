@@ -1,0 +1,25 @@
+* youtube-dl GUI for Android
+
+Based on [[https://realpython.com/mobile-app-kivy-python/][realpython.com article]].
+
+[[https://kivy.org/doc/stable/api-kivy.uix.layout.html][kivi documentation]]
+
+* Development
+** Prerequisites
+
+- nix
+- python 3.6
+
+** Run/build locally
+
+Activate nix-shell
+
+=nix-shell=
+
+Local native app
+
+=tox -e native=
+
+Local android app
+
+=tox -e android -- buildozer -v android debug=

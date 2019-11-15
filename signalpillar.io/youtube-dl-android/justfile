@@ -1,0 +1,5 @@
+native:
+  tox -e native
+
+build-apk:
+  tox -e android -- buildozer -v android debug
