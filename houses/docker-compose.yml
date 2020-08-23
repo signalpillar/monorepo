@@ -1,0 +1,17 @@
+version: '3'
+services:
+  mongodb:
+    image: mongo:4.0.8
+    container_name: mongodb
+    restart: unless-stopped
+    command: mongod --auth
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: rootpaswd
+      MONGO_INITDB_DATABASE: houses_and_schools
+      MONGODB_DATA_DIR: /data/houses_and_shcools_db
+      MONDODB_LOG_DIR: /dev/null
+    ports:
+      - 27017:27017
+    volumes:
+      - ./data:/data/houses_and_shcools_db
