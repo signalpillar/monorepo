@@ -8,6 +8,12 @@ authors = ["Volodymyr Vitvitskyi <contact.volodymyr@gmail.com>"]
 python = "^3.8"
 pymongo = "3.5.1"
 tqdm = "^4.53.0"
+pydantic = "^1.7.2"
+requests = "^2.25.0"
+pandas = "^1.1.4"
+scikit-learn = "^0.23.2"
+seaborn = "^0.11.0"
+jupyterlab = "^2.2.9"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
