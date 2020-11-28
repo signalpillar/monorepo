@@ -55,14 +55,56 @@ class SchoolsStorage:
         school_details["_id"] = school_details["urn"]
         self._collection.insert_one(school_details)
 
-    def iter_school_urn_to_coordinates(self):
+    def iter_schools(self, town):
+        yield from (
+            {
+                "urn": record["urn"],
+                "postcode": record["postcode"],
+                "town": record["town"],
+                "locality": record["locality"],
+                "laname": record["laname"],
+                "schooltype": record["schooltype"],
+                "minorgroup": record["minorgroup"],
+                "latitude": record["location"]["latitude"],
+                "longitude": record["location"]["longitude"],
+                "schname": record["schname"],
+            }
+            for record in self._collection.find(
+                {
+                    "$and": [
+                        {"schstatus": "Open"},
+                        {"issecondary": "1"},
+                        {"gender": {"$ne": "Boys"}},
+                        {"location": {"$exists": True}},
+                        {"town": town},
+                    ]
+                }
+            )
+            # for record in self._collection.find({"location": {"$exists": True}})
+        )
+
+    def iter_school_urn_to_coordinates(self, town=None):
         yield from (
             {
                 "urn": record["urn"],
                 "latitude": record["location"]["latitude"],
                 "longitude": record["location"]["longitude"],
             }
-            for record in self._collection.find({"location": {"$exists": True}})
+            for record in self._collection.find(
+                {
+                    "$and": [
+                        {"town": town},
+                        {"issecondary": "1"},
+                        {"gender": {"$ne": "Boys"}},
+                    ]
+                }
+            )
+            # for record in self._collection.find({"location": {"$exists": True}})
+        )
+
+    def iter_schools_by_urn(self, urns):
+        yield from (
+            record for record in self._collection.find({"urn": {"$in": list(urns)}})
         )
 
     def iter_all_post_codes(self):
