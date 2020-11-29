@@ -1,0 +1,141 @@
+:api-key := (getenv "ZOOPLA_API_KEY")
+:postcode = W38EY
+# Graphs
+GET https://api.zoopla.co.uk/api/v1/local_info_graphs.js?area=:postcode&api_key=:api-key
+
+# {
+#   "country": "England",
+#   "longitude": -0.281007,
+#   "area_name": " W3",
+#   "street": "",
+#   "town": "",
+#   "education_graph_url": "https://www.zoopla.co.uk/dynimgs/graph/local_info_chart/600-285-education-W38EY",
+#   "council_tax_graph_url": "https://www.zoopla.co.uk/dynimgs/graph/local_info_chart/600-285-CouncilTax-W38EY",
+#   "crime_graph_url": "https://www.zoopla.co.uk/dynimgs/graph/local_info_chart/600-285-Crime-W38EY",
+#   "people_graph_url": "https://www.zoopla.co.uk/dynimgs/graph/local_info_chart/600-285-People-W38EY",
+#   "latitude": 51.50541,
+#   "county": "London",
+#   "postcode": "W3 8EY",
+#   "bounding_box": {
+#     "longitude_min": "-0.281007",
+#     "latitude_min": "51.50541",
+#     "longitude_max": "-0.281007",
+#     "latitude_max": "51.50541"
+#   }
+# }
+
+# Average sell prices
+GET http://api.zoopla.co.uk/api/v1/average_sold_prices.json?postcode=:postcode&output_type=county&area_type=towns&api_key=:api-key
+
+
+# {
+#   "country": "England",
+#   "result_count": 44,
+#   "longitude": -0.2300615,
+#   "area_name": "",
+#   "street": "",
+#   "town": "",
+#   "latitude": 51.5043635,
+#   "county": "London",
+#   "areas": [
+#     {
+#       "number_of_sales_7year": 294,
+#       "average_sold_price_7year": 907197,
+#       "number_of_sales_5year": 189,
+#       "number_of_sales_3year": 101,
+#       "average_sold_price_1year": 1006210,
+#       "number_of_sales_1year": 17,
+#       "turnover": "14.0",
+#       "prices_url": "https://www.zoopla.co.uk/home-values/keston",
+#       "average_sold_price_3year": 1045252,
+#       "average_sold_price_5year": 942838
+#     },
+#     {
+#       "number_of_sales_7year": 1648,
+#       "average_sold_price_7year": 753771,
+#       "number_of_sales_5year": 1008,
+#       "number_of_sales_3year": 484,
+#       "average_sold_price_1year": 763160,
+#       "number_of_sales_1year": 97,
+#       "turnover": "9.5",
+#       "prices_url": "https://www.zoopla.co.uk/home-values/london/northwood",
+#       "average_sold_price_3year": 808679,
+#       "average_sold_price_5year": 800943
+#     },
+#     {
+#       "number_of_sales_7year": 2445,
+#       "average_sold_price_7year": 721357,
+#       "number_of_sales_5year": 1563,
+#       "number_of_sales_3year": 767,
+#       "average_sold_price_1year": 733768,
+#       "number_of_sales_1year": 146,
+#       "turnover": "13.9",
+#       "prices_url": "https://www.zoopla.co.uk/home-values/london/teddington",
+#       "average_sold_price_3year": 753249,
+#       "average_sold_price_5year": 755854
+#     },
+
+# Get listings
+GET http://api.zoopla.co.uk/api/v1/property_listings.json?postcode=:postcode&api_key=:api-key&radius=0.5&listing_status=sale&maximum_price=400000
+
+# {
+#   "country": "England",
+#   "result_count": 1413,
+#   "longitude": -0.26737,
+#   "area_name": " W3",
+#   "listing": [
+#     {
+#       "country_code": "gb",
+#       "num_floors": 0,
+#       "image_150_113_url": "https://lid.zoocdn.com/150/113/f6bd004f60bbb64d97510ca8a82b243a5ed4170d.jpg",
+#       "listing_status": "sale",
+#       "num_bedrooms": 24,
+#       "location_is_approximate": 0,
+#       "image_50_38_url": "https://lid.zoocdn.com/50/38/f6bd004f60bbb64d97510ca8a82b243a5ed4170d.jpg",
+#       "latitude": 51.504925,
+#       "furnished_state": null,
+#       "agent_address": "82 Shepherds Bush Road, London",
+#       "category": "Residential",
+#       "property_type": "Block of flats",
+#       "longitude": -0.256587,
+#       "thumbnail_url": "https://lid.zoocdn.com/80/60/f6bd004f60bbb64d97510ca8a82b243a5ed4170d.jpg",
+#       "description": "The Power House - Formerly a battery factory during the war years, this warehouse conversion has now been developed into 13 residential units. Featuring a mixture of brand new conversions and new builds, each space has high ceilings and superb natural light. Due for completion circa Easter 2020 the development comprises 2 x studios, 3 x one bedroom apartments, 4 x two bedroom apartments, 2 x two bedroom triplex penthouses and 2 x three bedroom triplex penthouses. Finished to a high standard throughout, whilst still retaining many original and industrial features, the development is positioned on the borders of Chiswick and Acton and only a short walk from Turnham Green Terrace and the open green spaces of Acton Park. Westfield London an Acton Crossrail are also within very easy reach.Further Information:For further information and a set of floor plans are available upon request.Full Planning permission has been achieved for 12 out of 13 units. Unit 5 (First Floor Studio) will need to go through the process 4 years of established use.A development of 13 residential unitsA warehouse conversion finished off to a high standard with original featuresDirectionsStanley Gardens is well located for Turnham Green tube station on the District & Picadilly Lines, Acton Central for the Overground and East Acton for the Central Line. Nearby are the shopping facilities of Westfield.You may download, store and use the material for your own personal use and research. You may not republish, retransmit, redistribute or otherwise make the material available to any party or make the same available on any website, online service or bulletin board of your own or of any other party or make the same available in hard copy or in any other media without the website owner's express prior written consent. The website owner's copyright must remain on all reproductions of material taken from this website.",
+#       "post_town": "London",
+#       "details_url": "https://www.zoopla.co.uk/for-sale/details/54393931?utm_source=v1:_LDITDGfCxbL9gCiebUwrTH-NwAkxrCY&utm_medium=api",
+#       "short_description": "<p class=\"top\">The Power House - Formerly a battery factory during the war years, this warehouse conversion has now been developed into 13 residential units. Featuring a mixture of brand new conversions and new builds, each space has high ceilings and superb natural light. Due for completion circa Easter 2020 the development comprises 2 x studios, 3 x one bedroom apartments, 4 x two bedroom apartments, 2 x two bedroom triplex penthouses and 2 x three bedroom triplex penthouses. Finished to a high standard throughout, whilst still retaining many original and industrial features, the development is positioned on the borders of Chiswick and Acton and only a short walk from Turnham Green Terrace and the open green spaces of Acton Park. Westfield London an Acton Crossrail are also within very easy reach.  Further Information:  For further information and a set of floor plans are available upon request.  Full Planning permission has been achieved for 12 out of 13 units. Unit 5 (First Floor Studio) will need to go through the process 4 years of established use.</p><p class=\"top\">A development of 13 residential units</p><p class=\"top\">A warehouse conversion finished off to a high standard with original features</p><h3 class=\"listing-desc-header top\"><strong>Directions</strong></h3><p class=\"top\">Stanley Gardens is well located for Turnham Green tube station on the District &amp; Picadilly Lines, Acton Central for the Overground and East Acton for the Central Line. Nearby are the shopping facilities of Westfield.</p><p class=\"top\">You may download, store and use the material for your own personal use and research. You may not republish, retransmit, redistribute or otherwise make the material available to any party or make the same available on any website, online service or bulletin board of your own or of any other party or make the same available in hard copy or in any other media without the website owner's express prior written consent. The website owner's copyright must remain on all reproductions of material taken from this website.</p>",
+#       "outcode": "W3",
+#       "image_645_430_url": "https://lid.zoocdn.com/645/430/f6bd004f60bbb64d97510ca8a82b243a5ed4170d.jpg",
+#       "county": "London",
+#       "price": "6500000",
+#       "listing_id": "54393931",
+#       "image_caption": "",
+#       "image_80_60_url": "https://lid.zoocdn.com/80/60/f6bd004f60bbb64d97510ca8a82b243a5ed4170d.jpg",
+#       "status": "for_sale",
+#       "agent_name": "Aston Rowe - Brook Green & Hammersmith",
+#       "num_recepts": 0,
+#       "country": "England",
+#       "first_published_date": "2020-02-27 13:36:18",
+#       "displayable_address": "Stanley Gardens, London W3",
+#       "floor_plan": [
+#         "https://lc.zoocdn.com/d544617d19c4c5388d05bef6883c81aca45b153d.jpg",
+#         "https://lc.zoocdn.com/2acb6fd6c57ea2dd1e48aae866bcb3686fe4a006.jpg",
+#         "https://lc.zoocdn.com/d96e9db086d42de224f730c2eefae40f672421cd.jpg",
+#         "https://lc.zoocdn.com/2c2f878940076f83b2a6081281ee3479eacd71ea.jpg",
+#         "https://lc.zoocdn.com/bb343b8a50e8df846ffe46c591dae183ba8b1404.jpg"
+#       ],
+#       "street_name": "Stanley Gardens",
+#       "num_bathrooms": 0,
+#       "agent_logo": "https://st.zoocdn.com/zoopla_static_agent_logo_(635018).png",
+#       "price_change": [
+#         {
+#           "direction": "",
+#           "date": "2020-02-27 13:34:21",
+#           "percent": "0%",
+#           "price": 6500000
+#         }
+#       ],
+#       "agent_phone": "020 8022 4078",
+#       "image_354_255_url": "https://lid.zoocdn.com/354/255/f6bd004f60bbb64d97510ca8a82b243a5ed4170d.jpg",
+#       "image_url": "https://lid.zoocdn.com/354/255/f6bd004f60bbb64d97510ca8a82b243a5ed4170d.jpg",
+#       "last_published_date": "2020-09-26 20:01:03"
+#     },
