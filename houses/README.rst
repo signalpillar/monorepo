@@ -3,6 +3,11 @@ postcodes to coordinates
 
 Another cool https://postcodes.io/
 
+06 Dec
+------
+- [ ] https://pypi.org/project/geopy/
+  https://towardsdatascience.com/heres-how-to-calculate-distance-between-2-geolocations-in-python-93ecab5bbba4
+
 29 Nov
 ------
 Created zoopla dev account and got key.

@@ -55,7 +55,14 @@ class SchoolsStorage:
         school_details["_id"] = school_details["urn"]
         self._collection.insert_one(school_details)
 
-    def iter_schools(self, towns=None, ignore_girls_school=False, postcode_areas=None):
+    def iter_schools(
+        self,
+        towns=None,
+        ignore_girls_school=False,
+        postcode_areas=None,
+        agehigh=None,
+        boroughs=None,
+    ):
         and_operands = [
             {"schstatus": "Open"},
             {"issecondary": "1"},
@@ -68,6 +75,10 @@ class SchoolsStorage:
             and_operands.append({"town": {"$in": towns}})
         if postcode_areas:
             and_operands.append({"location.postcode_area": {"$in": postcode_areas}})
+        if agehigh:
+            and_operands.append({"agehigh": str(agehigh)})
+        if boroughs:
+            and_operands.append({"laname": {"$in": boroughs}})
 
         yield from (
             {
@@ -81,6 +92,8 @@ class SchoolsStorage:
                 "latitude": record["location"]["latitude"],
                 "longitude": record["location"]["longitude"],
                 "schname": record["schname"],
+                "agehigh": record["agehigh"],
+                "agelow": record["agelow"],
             }
             for record in self._collection.find({"$and": and_operands})
         )

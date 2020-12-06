@@ -50,13 +50,13 @@ class ListedProperty(pydantic.BaseModel):
     longitude: float  # -0.271638,
     thumbnail_url: str  #  "https://lid.zoocdn.com/80/60/1b47563257b8b0ad07f77e0c51e5d874bbe2a78e.jpg",
     description: str  #  ...
-    post_town: str  #  "London",
+    post_town: t.Optional[str]  #  "London",
     details_url: str  # "https://www.zoopla.co.uk/for-sale/details/55741469?utm_source=v1:_LDITDGfCxbL9gCiebUwrTH-NwAkxrCY&utm_medium=api",
     short_description: HTMLText
     outcode: str  # "W3",
     image_645_430_url: URL  #  "https://lid.zoocdn.com/645/430/1b47563257b8b0ad07f77e0c51e5d874bbe2a78e.jpg",
-    new_home: bool  # "true"
-    county: str  #  "London",
+    new_home: t.Optional[bool]  # "true"
+    county: t.Optional[str]  #  "London",
     price: float  # "400000",
     listing_id: str  # "55741469",
     image_caption: str  # "",
@@ -64,21 +64,21 @@ class ListedProperty(pydantic.BaseModel):
     status: str  # "for_sale",
     agent_name: str  # "Aston Rowe - Acton",
     num_recepts: int  # 1,
-    country: str  # "England",
+    country: t.Optional[str]  # "England",
     first_published_date: str  # "2020-08-04 09:06:04",
     displayable_address: str  # "Horn Lane, London W3",
     floor_plan: t.Sequence[
         ImageURL
-    ]  # ["https://lc.zoocdn.com/2f1d7ebc813da4d65b91541e30506366fd78c1ed.jpg"]
+    ] = ()  # ["https://lc.zoocdn.com/2f1d7ebc813da4d65b91541e30506366fd78c1ed.jpg"]
     street_name: str  # "Horn Lane",
     num_bathrooms: int  # 1,
     agent_logo: ImageURL  # "https://st.zoocdn.com/zoopla_static_agent_logo_(635024).png",
-    price_change: t.Sequence[PriceChange]
+    price_change: t.Sequence[PriceChange] = ()
     agent_phone: str  # "020 3551 9604",
     image_354_255_url: ImageURL  # "https://lid.zoocdn.com/354/255/1b47563257b8b0ad07f77e0c51e5d874bbe2a78e.jpg",
     image_url: ImageURL  #  "https://lid.zoocdn.com/354/255/1b47563257b8b0ad07f77e0c51e5d874bbe2a78e.jpg",
     last_published_date: str  # "2020-11-13 14:36:56",
-    price_change_summary: PriceChangeSummary
+    price_change_summary: t.Optional[PriceChangeSummary]
 
 
 class ListingsResult(pydantic.BaseModel):
@@ -104,27 +104,39 @@ class Client:
         self.__session = requests.Session()
 
     def list_listings(
-        self, *, postcode, radius, radius_miles: float = None, maximum_price: int
+        self,
+        *,
+        postcode,
+        radius_miles: float = None,
+        maximum_price: int,
+        minimum_beds: int,
     ) -> ListingsResult:
+        # https://developer.zoopla.co.uk/docs/read/Property_listings
         params = {
             "area": postcode,
             "api_key": self.__api_key,
             "listing_status": "sale",
             "maximum_price": maximum_price,
+            "minimum_beds": minimum_beds,
         }
         if radius_miles is not None:
             params["radius"] = radius_miles
 
         response = self.__session.get(
-            f"{self.__base_url}/local_info_graphs.js", params=params
+            f"{self.__base_url}/property_listings.json", params=params
         )
         response.raise_for_status()
-        return ListingsResult.parse_obj(response.json())
+        try:
+            return ListingsResult.parse_obj(response.json())
+        except pydantic.ValidationError:
+            print(response.json())
+            raise
 
 
-def get_client():
+def get_client(token=None):
     import os
 
     return Client(
-        base_url="https://api.zoopla.co.uk/api/v1", api_key=os.environ["ZOOPLA_API_KEY"]
+        base_url="https://api.zoopla.co.uk/api/v1",
+        api_key=token or os.environ["ZOOPLA_API_KEY"],
     )
