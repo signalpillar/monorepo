@@ -76,9 +76,11 @@ class SchoolsStorage:
         if postcode_areas:
             and_operands.append({"location.postcode_area": {"$in": postcode_areas}})
         if agehigh:
-            and_operands.append({"agehigh": str(agehigh)})
+            and_operands.append({"agehigh": {"$gte": str(agehigh)}})
         if boroughs:
             and_operands.append({"laname": {"$in": boroughs}})
+
+        print(f"Mongo query: {and_operands}")
 
         yield from (
             {
@@ -94,8 +96,13 @@ class SchoolsStorage:
                 "schname": record["schname"],
                 "agehigh": record["agehigh"],
                 "agelow": record["agelow"],
+                "latest_ofsted": {
+                    "effectiveness": ofsted.get("Overall effectiveness"),
+                    "date": ofsted.get("Published date"),
+                },
             }
             for record in self._collection.find({"$and": and_operands})
+            for ofsted in (record.get("latest_ofsted") or {},)
         )
 
     def iter_school_urn_to_coordinates(self, town=None):
@@ -159,6 +166,80 @@ def collect_all_postcodes(args):
     # Path("postcodes.txt").write_text("\n".join(storage.iter_all_post_codes()))
 
 
+def add_ofsted_reports(args):
+    """Download ofsted reports
+
+    https://public.tableau.com/views/DataViewGetTheData/Getthedata?:showVizHome=no
+    Add those to each school.
+    """
+
+    lines = Path(args.reports_csv).read_text(encoding="utf-16").splitlines()
+    reader = csv.DictReader(lines, delimiter="\t")
+    storage = SchoolsStorage.init()
+    # Each line looks like the following:
+    # {'As at date': '31 Aug 19',
+    #  'Constituency': 'Not available',
+    #  'Deprivation': 'Not available',
+    #  'Deprivation index': '0',
+    #  'Does the inspection relate to the URN of the current school?': '',
+    #  'Epoch': 'After Dorset Change',
+    #  'Learner numbers': '30',
+    #  'Local authority area': 'Not available',
+    #  'Number of Records': '1',
+    #  'OE number': '1',
+    #  'Overall effectiveness': 'Outstanding',
+    #  'Phase': '',
+    #  'Pop filter': 'True',
+    #  'Postcode': 'ZZ99 3CZ',
+    #  'Provider name': 'REDACTED',
+    #  'Provider type': 'Childcare on non-domestic premises',
+    #  'Provision type': 'Childcare on non-domestic premises',
+    #  'Published date': '30 Sep 2019',
+    #  'Region 9 name': 'Not available',
+    #  'Remit': 'Early years',
+    #  'Sector': '',
+    #  'Selected': 'Select for download',
+    #  'URN': 'EY400304',
+    #  '_': '1'}
+    ofsted_report_by_urn = {
+        report_dict["URN"]: report_dict
+        for report_dict in reader
+        if "URN" in report_dict
+    }
+
+    print(f"Loaded {len(ofsted_report_by_urn)} reports")
+
+    fields_to_save = {
+        "Epoch",
+        "Learner numbers",
+        "Number of Records",
+        "OE number",
+        "Overall effectiveness",
+        "Phase",
+        "Provider name",
+        "Provider type",
+        "Remit",
+        "Sector",
+        "Deprivation",
+        "Deprivation index",
+        "Published date",
+    }
+
+    def add_latest_report(idx, schoold_dict):
+        school_urn = schoold_dict["urn"]
+        report = ofsted_report_by_urn.get(school_urn)
+        if not report:
+            name = schoold_dict["schname"]
+            print(f"No report for URN {school_urn!r} name {name!r}")
+            return None
+        print(idx, end=" ", flush=True)
+        return dict(
+            latest_ofsted={field: report.get(field) for field in fields_to_save}
+        )
+
+    SchoolsStorage.init().update_each_school(add_latest_report)
+
+
 def init_schools_collection(args):
     """Initialize database.
 
@@ -202,6 +283,12 @@ def parse_args(argv):
 
     collect_post_codes = subparsers.add_parser("collectpostcodes")
     collect_post_codes.set_defaults(func=collect_all_postcodes)
+
+    add_ofsted = subparsers.add_parser("addofsted")
+    add_ofsted.add_argument(
+        "reports_csv", nargs="?", default="./data/ofsted_reports.csv"
+    )
+    add_ofsted.set_defaults(func=add_ofsted_reports)
 
     args = parser.parse_args(argv)
     if args.func:

@@ -3,10 +3,33 @@ postcodes to coordinates
 
 Another cool https://postcodes.io/
 
+.. code::
+
+    poetry run python houses addofsted
+
+
+07 Dec
+------
+- [x] Fix school rating rendering by colour.
+- [ ] Not all ofsted reports are present, need to query ofsted site on `demand
+  <https://reports.ofsted.gov.uk/provider/27/133444>_`.
+
 06 Dec
 ------
 - [ ] https://pypi.org/project/geopy/
   https://towardsdatascience.com/heres-how-to-calculate-distance-between-2-geolocations-in-python-93ecab5bbba4
+
+
+I need to find places where I am interested to live in.
+
+Using longon datastore to pick the borough
+
+https://londondatastore-upload.s3.amazonaws.com/instant-atlas/borough-profiles/atlas.html
+
+- [x] downloaded atlas.xlsx file from `gov
+  <https://data.london.gov.uk/dataset/london-borough-profiles>_` site
+- [x] `ofsted reports <https://public.tableau.com/views/DataViewGetTheData/Getthedata?:showVizHome=no>_`
+
 
 29 Nov
 ------

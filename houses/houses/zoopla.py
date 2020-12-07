@@ -37,11 +37,15 @@ class PriceChangeSummary(pydantic.BaseModel):
 class ListedProperty(pydantic.BaseModel):
     country_code: str  #  "gb",
     num_floors: int  #  0,
-    image_150_113_url: str  # "https://lid.zoocdn.com/150/113/1b47563257b8b0ad07f77e0c51e5d874bbe2a78e.jpg",
+    image_150_113_url: t.Optional[
+        str
+    ]  # "https://lid.zoocdn.com/150/113/1b47563257b8b0ad07f77e0c51e5d874bbe2a78e.jpg",
     listing_status: ListingStatus
     num_bedrooms: int  #  1,
     location_is_approximate: bool  # 0,
-    image_50_38_url: str  # "https://lid.zoocdn.com/50/38/1b47563257b8b0ad07f77e0c51e5d874bbe2a78e.jpg",
+    image_50_38_url: t.Optional[
+        str
+    ]  # "https://lid.zoocdn.com/50/38/1b47563257b8b0ad07f77e0c51e5d874bbe2a78e.jpg",
     latitude: float  # 51.508545,
     furnished_state: t.Optional[str]  #  null,
     agent_address: str  # "103 Churchfield Road, Acton",
@@ -54,13 +58,17 @@ class ListedProperty(pydantic.BaseModel):
     details_url: str  # "https://www.zoopla.co.uk/for-sale/details/55741469?utm_source=v1:_LDITDGfCxbL9gCiebUwrTH-NwAkxrCY&utm_medium=api",
     short_description: HTMLText
     outcode: str  # "W3",
-    image_645_430_url: URL  #  "https://lid.zoocdn.com/645/430/1b47563257b8b0ad07f77e0c51e5d874bbe2a78e.jpg",
+    image_645_430_url: t.Optional[
+        URL
+    ]  #  "https://lid.zoocdn.com/645/430/1b47563257b8b0ad07f77e0c51e5d874bbe2a78e.jpg",
     new_home: t.Optional[bool]  # "true"
     county: t.Optional[str]  #  "London",
     price: float  # "400000",
     listing_id: str  # "55741469",
-    image_caption: str  # "",
-    image_80_60_url: str  # "https://lid.zoocdn.com/80/60/1b47563257b8b0ad07f77e0c51e5d874bbe2a78e.jpg",
+    image_caption: t.Optional[str]  # "",
+    image_80_60_url: t.Optional[
+        str
+    ]  # "https://lid.zoocdn.com/80/60/1b47563257b8b0ad07f77e0c51e5d874bbe2a78e.jpg",
     status: str  # "for_sale",
     agent_name: str  # "Aston Rowe - Acton",
     num_recepts: int  # 1,
@@ -75,8 +83,12 @@ class ListedProperty(pydantic.BaseModel):
     agent_logo: ImageURL  # "https://st.zoocdn.com/zoopla_static_agent_logo_(635024).png",
     price_change: t.Sequence[PriceChange] = ()
     agent_phone: str  # "020 3551 9604",
-    image_354_255_url: ImageURL  # "https://lid.zoocdn.com/354/255/1b47563257b8b0ad07f77e0c51e5d874bbe2a78e.jpg",
-    image_url: ImageURL  #  "https://lid.zoocdn.com/354/255/1b47563257b8b0ad07f77e0c51e5d874bbe2a78e.jpg",
+    image_354_255_url: t.Optional[
+        ImageURL
+    ]  # "https://lid.zoocdn.com/354/255/1b47563257b8b0ad07f77e0c51e5d874bbe2a78e.jpg",
+    image_url: t.Optional[
+        ImageURL
+    ]  #  "https://lid.zoocdn.com/354/255/1b47563257b8b0ad07f77e0c51e5d874bbe2a78e.jpg",
     last_published_date: str  # "2020-11-13 14:36:56",
     price_change_summary: t.Optional[PriceChangeSummary]
 
