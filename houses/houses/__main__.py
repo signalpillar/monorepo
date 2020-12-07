@@ -10,6 +10,10 @@ from pymongo import MongoClient
 import pymongo.errors
 
 
+def is_ofsted_report_bad(effectiveness: t.Optional[str]):
+    return not (effectiveness is None or effectiveness in {"Outstanding", "Good"})
+
+
 class SchoolsStorage:
     """Example of entry in the storage.
 
@@ -63,6 +67,7 @@ class SchoolsStorage:
         agehigh=None,
         agelow=None,
         boroughs=None,
+        ignore_bad_ofsted=False,
     ):
         and_operands = [
             {"schstatus": "Open"},
@@ -85,8 +90,9 @@ class SchoolsStorage:
 
         print(f"Mongo query: {and_operands}")
 
-        yield from (
-            {
+        for record in self._collection.find({"$and": and_operands}):
+            report = record.get("latest_ofsted") or {}
+            school_dict = {
                 "urn": record["urn"],
                 "postcode": record["postcode"],
                 "town": record["town"],
@@ -100,13 +106,15 @@ class SchoolsStorage:
                 "agehigh": record["agehigh"],
                 "agelow": record["agelow"],
                 "latest_ofsted": {
-                    "effectiveness": ofsted.get("Overall effectiveness"),
-                    "date": ofsted.get("Published date"),
+                    "effectiveness": report.get("Overall effectiveness"),
+                    "date": report.get("Published date"),
                 },
             }
-            for record in self._collection.find({"$and": and_operands})
-            for ofsted in (record.get("latest_ofsted") or {},)
-        )
+            if ignore_bad_ofsted and is_ofsted_report_bad(
+                report.get("Overall effectiveness")
+            ):
+                continue
+            yield school_dict
 
     def iter_school_urn_to_coordinates(self, town=None):
         yield from (

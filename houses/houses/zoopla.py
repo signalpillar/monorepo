@@ -122,6 +122,7 @@ class Client:
         radius_miles: float = None,
         maximum_price: int,
         minimum_beds: int,
+        only_new_homes: bool = False,
     ) -> ListingsResult:
         # https://developer.zoopla.co.uk/docs/read/Property_listings
         params = {
@@ -131,6 +132,9 @@ class Client:
             "maximum_price": maximum_price,
             "minimum_beds": minimum_beds,
         }
+        if only_new_homes is not None:
+            # will show only new homes
+            params["new_homes"] = "true"
         if radius_miles is not None:
             params["radius"] = radius_miles
 

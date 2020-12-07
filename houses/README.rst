@@ -7,12 +7,16 @@ Another cool https://postcodes.io/
 
     poetry run python houses addofsted
 
+Next
+----
+- [ ] Not all ofsted reports are present, need to query ofsted site on `demand
+  <https://reports.ofsted.gov.uk/provider/27/133444>_`.
 
 07 Dec
 ------
 - [x] Fix school rating rendering by colour.
-- [ ] Not all ofsted reports are present, need to query ofsted site on `demand
-  <https://reports.ofsted.gov.uk/provider/27/133444>_`.
+- [x] only_new_homes
+- we decided to search flats in radius of 1mile and without clustering
 
 06 Dec
 ------
