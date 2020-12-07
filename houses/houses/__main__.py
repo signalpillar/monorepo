@@ -61,6 +61,7 @@ class SchoolsStorage:
         ignore_girls_school=False,
         postcode_areas=None,
         agehigh=None,
+        agelow=None,
         boroughs=None,
     ):
         and_operands = [
@@ -77,6 +78,8 @@ class SchoolsStorage:
             and_operands.append({"location.postcode_area": {"$in": postcode_areas}})
         if agehigh:
             and_operands.append({"agehigh": {"$gte": str(agehigh)}})
+        if agelow:
+            and_operands.append({"agelow": {"$lte": str(agelow)}})
         if boroughs:
             and_operands.append({"laname": {"$in": boroughs}})
 
