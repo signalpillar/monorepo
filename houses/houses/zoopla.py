@@ -80,7 +80,9 @@ class ListedProperty(pydantic.BaseModel):
     ] = ()  # ["https://lc.zoocdn.com/2f1d7ebc813da4d65b91541e30506366fd78c1ed.jpg"]
     street_name: str  # "Horn Lane",
     num_bathrooms: int  # 1,
-    agent_logo: ImageURL  # "https://st.zoocdn.com/zoopla_static_agent_logo_(635024).png",
+    agent_logo: t.Optional[
+        ImageURL
+    ]  # "https://st.zoocdn.com/zoopla_static_agent_logo_(635024).png",
     price_change: t.Sequence[PriceChange] = ()
     agent_phone: str  # "020 3551 9604",
     image_354_255_url: t.Optional[
