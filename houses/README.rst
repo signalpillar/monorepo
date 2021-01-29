@@ -12,6 +12,10 @@ Next
 - [ ] Not all ofsted reports are present, need to query ofsted site on `demand
   <https://reports.ofsted.gov.uk/provider/27/133444>_`.
 
+12 Dec
+------
+- [x] Found maps with poverty rates per `borough <https://www.trustforlondon.org.uk/data/borough-comparison-living-standards/>_`
+
 07 Dec
 ------
 - [x] Fix school rating rendering by colour.
