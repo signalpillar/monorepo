@@ -7,6 +7,15 @@ Another cool https://postcodes.io/
 
     poetry run python houses addofsted
 
+
+Start the project
+-----------------
+```bash
+
+ddc up -d mongodb
+poetry run jupyter notebook
+```
+
 Next
 ----
 - [ ] Not all ofsted reports are present, need to query ofsted site on `demand
